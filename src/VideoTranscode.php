@@ -1,7 +1,5 @@
 <?php
-
 namespace Pingqu;
-use const null;
 use Pingqu\VideoTranscode\Core as DdvCore;
 
 /**
