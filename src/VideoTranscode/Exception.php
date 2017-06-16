@@ -2,6 +2,6 @@
 
 namespace Pingqu\VideoTranscode;
 
-class Exception extends \Pingqu\Exception\Error
+class Exception extends \Pingqu\OpenApi\Exception
 {
 }
