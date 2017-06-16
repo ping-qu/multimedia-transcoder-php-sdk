@@ -1,10 +1,10 @@
-# video-transcoder
+# multimedia-transcoder
 
 Installation - 安装
 ------------
 
 ```bash
-composer require ping-qu/video-transcoder
+composer require ping-qu/multimedia-transcoder
 ```
 
 ------

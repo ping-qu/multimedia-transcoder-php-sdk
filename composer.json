@@ -1,10 +1,10 @@
 {
-	"name": "ping-qu/video-transcoder",
-	"description": "video-transcoder php library",
+	"name": "ping-qu/multimedia-transcoder",
+	"description": "multimedia-transcoder php library",
 	"version": "0.0.1",
 	"require": {
 		"php": ">=5.3",
-		"ping-qu/pingqu-exception": "0.0.*"
+		"ping-qu/exception": "0.0.*"
 	},
 	"require-dev": {
 	},
