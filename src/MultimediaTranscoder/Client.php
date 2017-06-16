@@ -1,13 +1,13 @@
 <?php
-namespace Pingqu\VideoTranscode;
+namespace Pingqu\MultimediaTranscoder\V1;
 
 use \Pingqu\OpenApi\Util as Util;
 
 /**
  * Class Client
- * @package Pingqu\VideoTranscode
+ * @package Pingqu\MultimediaTranscoder\V1
  *
- * Pingqu VideoTranscode(PQVT) 的客户端类，封装了用户通过VT API对PQVT服务的各种操作，
+ * Pingqu MultimediaTranscoder\V1(PQVT) 的客户端类，封装了用户通过VT API对PQVT服务的各种操作，
  * 用户通过Client实例可以进行Bucket，Object，MultipartUpload, ACL等操作，具体
  * 的接口规则可以参考官方PQVT API文档
  */

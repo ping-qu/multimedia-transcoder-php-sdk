@@ -1,9 +1,9 @@
 <?php
-namespace Pingqu\VideoTranscode;
+namespace Pingqu\MultimediaTranscoder\V1;
 
 /**
  * Class Util
- * @package Pingqu\VideoTranscode
+ * @package Pingqu\MultimediaTranscoder\V1
  */
 class ExtNameToType
 {
