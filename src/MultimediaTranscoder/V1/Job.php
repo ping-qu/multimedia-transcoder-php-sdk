@@ -39,72 +39,74 @@ class Job
       $this->accessKeyId = $accessKeyId;
       $this->accessKeySecret = $accessKeySecret;
       $this->endpoint = $endpoint;
-      self::checkEnv();
+
   }
 
-    /*
-     * 设置请求参数
-     *
-     */
-    public function set_params($params = array()){
-        self::$params = $params;
-    }
-
-    /*
-     * 设置请求头
-     */
-    public function set_header($header = array()){
-        self::$header = $header;
-    }
-
-    /*
-     * 携带签名信息发送http请求
-     */
-    public function send_request($method = null){
-        \Pingqu\OpenApi\Auth\Sign::setConfig([
-            'accessKeyId'=>$this->accessKeyId,
-            'accessKey'=>$this->accessKeySecret
-        ]);
-        $method = empty($method)?'GET':$method;
-        $para = empty(self::$params)?[]:self::$params;
-        $httpCore = new \Pingqu\OpenApi\Http\RequestCore($this->endpoint);
-        $httpCore->set_body(\DdvPhp\DdvUrl::buildQuery($para));
-        $httpCore->set_method($method);
-        foreach (self::$header as $key=>$item) {
-            $httpCore->add_header($key,$item);
+    public function getFileJob($add_time_end = null,$add_time_start = null,$state = null){
+        $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/v4_0/admin/file/job');
+        $params = [
+            'add_time_end'=>isset($add_time_end)?$add_time_end:null,
+            'add_time_start'=>isset($add_time_start)?$add_time_start:null,
+            'state'=>isset($state)?$state:null
+        ];
+        $client->setParams($params);
+        $respone = $client->sendRequest('GET');
+        $body = json_decode($respone->body);
+        if($body->errorId == 'OK'){
+            //dd($body);
+            return ['lists'=>$body->lists,'page'=>$body->page];
+        }else{
+            throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
         }
-        $httpCore->add_header('Authorization', \Pingqu\OpenApi\Auth\Sign::getAuth($httpCore));
-        $httpResponse = $httpCore->send_request(true);
-        return $httpResponse;
     }
 
-  /**
-   * 用来检查sdk所以来的扩展是否打开
-   *
-   * @throws Exception
-   */
-  public static function checkEnv()
-  {
-      if (function_exists('get_loaded_extensions')) {
-          //检测curl扩展
-          $enabled_extension = array("curl");
-          $extensions = get_loaded_extensions();
-          if ($extensions) {
-              foreach ($enabled_extension as $item) {
-                  if (!in_array($item, $extensions)) {
-                      throw new Exception("Extension {" . $item . "} is not installed or not enabled, please check your php env.");
-                  }
-              }
-          } else {
-              throw new Exception("function get_loaded_extensions not found.");
-          }
-      } else {
-          throw new Exception('Function get_loaded_extensions has been disabled, please check php config.');
-      }
-  }
-  // 域名类型
-  const PQVT_HOST_TYPE_NORMAL = "normal";//http://bucket.oss-cn-hangzhou.aliyuncs.com/object
-  const PQVT_HOST_TYPE_IP = "ip";  //http://1.1.1.1/bucket/object
-  const PQVT_HOST_TYPE_SPECIAL = 'special'; //http://bucket.guizhou.gov/object
-  const PQVT_HOST_TYPE_CNAME = "cname";  //http://mydomain.com/object
+    public function getVideoJob($add_time_end = null,$add_time_start = null,$state = null){
+        $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/v4_0/admin/Video/job');
+        $params = [
+            'add_time_end'=>isset($add_time_end)?$add_time_end:null,
+            'add_time_start'=>isset($add_time_start)?$add_time_start:null,
+            'state'=>isset($state)?$state:null
+        ];
+        $client->setParams($params);
+        $respone = $client->sendRequest('GET');
+        $body = json_decode($respone->body);
+        if($body->errorId == 'OK'){
+            //dd($body);
+            return ['lists'=>$body->lists,'page'=>$body->page];
+        }else{
+            throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
+        }
+    }
+
+    public function deleteFileJob($job_id){
+        $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/v4_0/admin/file/job/'.$job_id);
+        $params = [
+
+        ];
+        $client->setParams($params);
+        $respone = $client->sendRequest('DELETE');
+        $body = json_decode($respone->body);
+        if($body->errorId == 'OK'){
+            return true;
+        }else{
+            throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
+        }
+    }
+
+    public function deleteVideoJob($job_id){
+        $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/v4_0/admin/Video/job/'.$job_id);
+        $params = [
+
+        ];
+        $client->setParams($params);
+        $respone = $client->sendRequest('DELETE');
+        $body = json_decode($respone->body);
+        if($body->errorId == 'OK'){
+            return true;
+        }else{
+            throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
+        }
+    }
+
+
 }
