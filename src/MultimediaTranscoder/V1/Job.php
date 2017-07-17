@@ -14,8 +14,7 @@ use \Pingqu\OpenApi\Util as Util;
 class Job
 {
 
-    private static $params = array();
-    private static $header = array();
+
   /**
    * 构造函数
    *必须传$accessKeyId, $accessKeySecret, $endpoint
@@ -39,17 +38,17 @@ class Job
       $this->accessKeyId = $accessKeyId;
       $this->accessKeySecret = $accessKeySecret;
       $this->endpoint = $endpoint;
-
+      $this->params = array();
   }
 
-    public function getFileJob($add_time_end = null,$add_time_start = null,$state = null){
+    public function setParams($params = array()){
+        $this->params = $params;
+    }
+
+    public function getFileJob(){
         $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/v4_0/admin/file/job');
-        $params = [
-            'add_time_end'=>isset($add_time_end)?$add_time_end:null,
-            'add_time_start'=>isset($add_time_start)?$add_time_start:null,
-            'state'=>isset($state)?$state:null
-        ];
-        $client->setParams($params);
+
+        $client->setParams($this->params);
         $respone = $client->sendRequest('GET');
         $body = json_decode($respone->body);
         if($body->errorId == 'OK'){
@@ -72,6 +71,30 @@ class Job
         $body = json_decode($respone->body);
         if($body->errorId == 'OK'){
             //dd($body);
+            return ['lists'=>$body->lists,'page'=>$body->page];
+        }else{
+            throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
+        }
+    }
+
+    public function addFileJob(){
+        $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/v4_0/admin/file/job');
+        $client->setParams($this->params);
+        $respone = $client->sendRequest('POST');
+        $body = json_decode($respone->body);
+        if($body->errorId == 'OK'){
+            return ['lists'=>$body->lists,'page'=>$body->page];
+        }else{
+            throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
+        }
+    }
+
+    public function addVideoJob(){
+        $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/v4_0/admin/video/job');
+        $client->setParams($this->params);
+        $respone = $client->sendRequest('POST');
+        $body = json_decode($respone->body);
+        if($body->errorId == 'OK'){
             return ['lists'=>$body->lists,'page'=>$body->page];
         }else{
             throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
