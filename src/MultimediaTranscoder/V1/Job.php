@@ -131,5 +131,17 @@ class Job
         }
     }
 
+    public function upload_complete(){
+        $client = new \Pingqu\OpenApi\Api($this->accessKeyId, $this->accessKeySecret,$this->endpoint.'/api/upload_complete');
+        $client->setParams($this->params);
+        $respone = $client->sendRequest('POST');
+        $body = json_decode($respone->body);
+        if($body->errorId == 'OK'){
+            return true;
+        }else{
+            throw new \DdvPhp\DdvFile\Exception\Sys('添加失败',$body->message);
+        }
+    }
+
 
 }
